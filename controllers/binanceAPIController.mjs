@@ -35,17 +35,23 @@ export const getOrderBook = async (req, res , next) => {
   }
 }
 export const getAggTrade = async (req, res, next) => {
-  const response = await axios.get("https://api.binance.com/api/v3/depth", {
-    params: {
-      symbol: req.params.symbol,
-      limit: 36,
-    },
-  });
+try{  const response = await axios.get(
+    "https://api.binance.com/api/v3/aggTrades",
+    {
+      params: {
+        symbol: req.params.symbol,
+        limit: 19,
+      },
+    }
+  );
   if (response.status === 200) {
     res.json(response.data);
     return;
   } else {
     res.json([]);
+  }}catch(e){
+    console.log(e);
+    res.json([])
   }
 };
 export const getTickers = async (req, res, next) => {
@@ -77,4 +83,20 @@ export const getAvgPrice = async (req, res, next) => {
     } else {
       res.json([]);
     }
+};
+
+export const getGlobalMarketData = async (req, res, next) => {
+  try {
+    const response = await axios.get("https://api.coinpaprika.com/v1/global");
+    if (response.status ===200){
+      res.json(response.data);
+      return
+    }
+    res.json(null);
+    next()
+  } catch (error) {
+    console.log(error);
+    res.json(null)
+     next();
+  }
 }

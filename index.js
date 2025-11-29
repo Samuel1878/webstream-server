@@ -1,7 +1,9 @@
 import express from "express";
-import { getAvgPrice, getKline, getOrderBook, getTickers } from "./controllers/binanceAPIController.mjs";
+import { getAggTrade, getAvgPrice, getGlobalMarketData, getKline, getOrderBook, getTickers } from "./controllers/binanceAPIController.mjs";
 import cors from "cors"
 const app = express();
+const HOST = "150.95.26.121";
+const PORT = 3000
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -13,8 +15,10 @@ app.get("/kline/:symbol", getKline);
 app.get("/orderbook/:symbol", getOrderBook);
 app.get("/avgprice/:symbol", getAvgPrice);
 app.get("/tickers", getTickers);
+app.get("/global", getGlobalMarketData);
+app.get("/aggtrade/:symbol",getAggTrade)
 
 // Start the server
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on http://${HOST}:${PORT}`);
 });
