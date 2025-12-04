@@ -81,7 +81,7 @@ export const getTickers = async (req, res, next) => {
   }
 };
 export const getAvgPrice = async (req, res, next) => {
-  const response = await axios.get("https://api.binance.com/api/v3/avgPrice", {
+ try{ const response = await axios.get("https://api.binance.com/api/v3/avgPrice", {
     params: {
       symbol: req.params.symbol,
     },
@@ -90,8 +90,11 @@ export const getAvgPrice = async (req, res, next) => {
       res.json(response.data);
       return;
     } else {
-      res.json([]);
-    }
+      res.json(null);
+    }} catch (error) {
+    console.log(error);
+    res.json(null);
+  }
 };
 
 export const getGlobalMarketData = async (req, res, next) => {
